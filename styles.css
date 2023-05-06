@@ -1,0 +1,100 @@
+body {
+  font-family: 'Tillana', serif;
+  background: url(https://legends.pokemon.com/assets/bg-weave-mid-to-light.jpg) repeat-x top center,url(https://legends.pokemon.com/assets/bg-weave-light.jpg) repeat top center;
+}
+
+video {
+  display: block;
+  margin-top: 10px;
+  max-width: 100%;
+  background: black;
+  max-height: 480px;
+}
+
+.space-time {
+	background: red;
+}
+
+.ink {
+  background:url(https://legends.pokemon.com/assets/home/ink-desktop-1.png) no-repeat center 3%,url(https://legends.pokemon.com/assets/home/ink-desktop-left.png) no-repeat left 9%,url(https://legends.pokemon.com/assets/home/ink-desktop-right.png) no-repeat right 9%
+}
+
+.navbar {
+  --bs-navbar-color: white;
+  --bs-navbar-brand-color: white;
+  --bs-dark-rgb: 35, 24, 21;
+}
+
+.btn {
+    border-radius: 18px;
+    min-height: 60px;
+    color: #e5eaee;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 10px 22px;
+    text-transform: uppercase;
+    background-image: url(https://legends.pokemon.com/assets/button-bg.png);
+    background-repeat: repeat-x;
+    background-position: center bottom;
+    background-size: auto 32%;
+
+    --bs-btn-bg: #283c50;
+    --bs-btn-border-color: #283c50;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #34a19c;
+    --bs-btn-hover-border-color: #34a19c;
+    --bs-btn-focus-shadow-rgb: 49,132,253;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #34a19c;
+    --bs-btn-active-border-color: #34a19c;
+}
+
+.card {
+  border: 21px solid;
+  border-image: url(https://legends.pokemon.com/assets/border-paper.png) 42 repeat;
+
+  background: url(https://legends.pokemon.com/assets/bg-paper.jpg) repeat center top;
+  background-size: auto 80px;
+}
+
+.detector-alert {
+  position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgb(36,0,33);
+    background: linear-gradient(0deg, rgba(36,0,33,.5) 0%, rgba(121,9,111,.5) 35%, rgba(162,0,255,.5) 100%);
+}
+
+.detector-alert > .blocker {
+  pointer-events: none;
+}
+
+.detector-alert > div {
+  height: 100%;
+}
+
+.detector-alert > div > span {
+  color: white;
+  font-size: 5rem;
+  font-weight: bold;
+}
+
+.section-divider {
+  height: 32px;
+    width: 100%;
+  background: url(https://legends.pokemon.com/assets/divider-diamond-blue-small.png) repeat-x center center;
+  background-size: auto 30px;
+  padding: 1px 0;
+}
+
+.navbar-brand {
+  font-weight: bold;
+}
