@@ -1,80 +1,165 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Tillana:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="#">Pokémon Legends Arceus: Space-time Distortions Detector</a>
-      </div>
-    </nav>
-    <div class="section-divider mb-3"></div>
-    <main class="container">
-      <div class="row">
-        <div class="col-12 mb-3">
-          <div class="card">
-            <h4 class="card-header">Pokémon Legends Arceus: Space-time Distortions Detector</h4>
-            <div class="card-body">
-              The Pokémon Legends Arceus: Space-time Distortions Detector lets you detect when a Space-time disortion appears in your game when streamed to your computer.
-            </div>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Space-time Distortions Detector</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tillana:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <a class="navbar-brand" href="#">Pokémon Legends Arceus: Space-time Distortions Detector</a>
+    </div>
+  </nav>
+  <div class="section-divider mb-3"></div>
+  <main class="container">
+    <div class="row">
+      <div class="col-12 mb-3">
+        <div class="card">
+          <h4 class="card-header">Pokémon Legends Arceus: Space-time Distortions Detector</h4>
+          <div class="card-body">
+            The Pokémon Legends Arceus: Space-time Distortions Detector lets you detect when a Space-time disortion
+            appears in your game when streamed to your computer.
           </div>
         </div>
+      </div>
 
-        <div class="col-12 col-md-6 mb-3">
-          <div class="card">
-            <h4 class="card-header">Detector</h4>
-            <div class="card-body">
-              <p>Click below to start detecting.</p>
-              <p>You will be prompted to select a tab, window or screen to monitor. The detector will then look for the words 'Space', 'Time' or 'Distortion' and flag if any are matched.</p>
-              <p class="fst-italic">This means you might have some false positives during cutscenes or menus.</p>
-              <div class="d-flex justify-content-center">
-                <a href="#" class="btn btn-primary detect-toggle">Start Detecting</a>
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card">
+          <h4 class="card-header">Detector</h4>
+          <div class="card-body">
+            <p>Click below to start detecting.</p>
+            <p>You will be prompted to select a tab, window or screen to monitor. The detector will then look for the
+              words 'Space', 'Time' or 'Distortion' in the top 1/3 of your screen and flag if any are matched.</p>
+            <p class="fst-italic">This means you might have some false positives during cutscenes or menus.</p>
+            <div class="d-flex justify-content-center">
+              <div>
+                <span><strong>Preview</strong></span>
+                <video autoplay muted playsinline></video>
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="col-12 col-md-6 mb-3">
-          <div class="card">
-            <h4 class="card-header">Tracker</h4>
-            <div class="card-body">
-              <p>Coming soon.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-12 mb-3" style="display: none;">
-          <div class="card">
-            <h4 class="card-header">Debug</h4>
-            <div class="card-body">
-              <video autoplay muted playsinline></video>
-              <canvas></canvas>
-              <pre id="logs"></pre>
+          <div class="card-footer">
+            <div class="d-flex justify-content-center">
+              <a href="#" class="btn btn-primary detect-toggle">Start Detecting</a>
             </div>
           </div>
         </div>
       </div>
-    </main>
 
-    <div class="detector-alert" style="display: none;">
-      <div class="d-flex flex-column justify-content-center align-items-center">
-        <div class="blocker"></div>
-        <span>Space-time Distortion Detected!</span>
-        <a href="#" class="btn btn-primary dimiss-alert">Dismiss</a>
+      <div class="col-12 col-md-6 mb-3">
+        <div class="card">
+          <h4 class="card-header">Tracker</h4>
+          <div class="card-body">
+            <table class="table table-sm">
+              <thead>
+                <tr>
+                  <th>Minutes</th>
+                  <th>Remaining</th>
+                  <th>Chance</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>5</td>
+                  <td data-countdown="5"></td>
+                  <td>10%</td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td data-countdown="10"></td>
+                  <td>30%</td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td data-countdown="15"></td>
+                  <td>50%</td>
+                </tr>
+                <tr>
+                  <td>25</td>
+                  <td data-countdown="25"></td>
+                  <td>75%</td>
+                </tr>
+                <tr>
+                  <td>40</td>
+                  <td data-countdown="40"></td>
+                  <td>100%</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p class="fst-italic">The Space-time distortion timer will only run while you're roaming the overworld.</p>
+            <p class="fst-italic">If you're in a battle, conversation, cutscene or menu you should pause your timer to keep it as accurate as possible.</p>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-around">
+              <a href="#" class="btn btn-primary toggle-timer">Start Timer</a>
+              <a href="#" class="btn btn-primary stop-timer">Stop Timer</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mb-3">
+        <div class="card">
+          <h4 class="card-header">How do Space-time Distortions Work?</h4>
+          <div class="card-body">
+            <p><strong>Overview</strong></p>
+            <p>While in the overworld (not in Jubilife Village), there's an increasing chance every 5, 10, 15, 25 and 40 minutes that that the game will generate a Space-time distortion.</p>
+            <p>The timer for Space-time distortions is always running while you're in the overworld, unless you're in a battle, conversation, cutscene or menu.</p>
+            <p>Once the game reaches one of the timer interval there's an increasing chance a Space-time distortion is generated, if one isn't generated, the timer simply carries on until the next interval.</p>
+
+
+            <p><strong>Caveats</strong></p>
+            <p>If you rest for any longer than 'Just a little while' the timers will be reset and you'll start from 5 minutes with a 10% chance again.</p>
+            <p>If you leave an area (go back to Jubilife Village or enter a cave), the timers will be reset.</p>
+            <p>If there is 'strong' weather when a Space-time distortion should be generated, the game will skip the generation and the timers will be reset.</p>
+            <p>This includes, 'Strong Sun', 'Thunderstorm' and 'Blizzard'.</p>
+            <img src="https://img.game8.co/3472181/4c1148b788f9d94b31cdccaf65dbe0a3.png/show" width="100px"/>
+            <img src="https://img.game8.co/3472183/6103d6c3762ecfd27c871b0bde2c9638.png/show" width="100px"/>
+            <img src="https://img.game8.co/3472184/d27886afcdda5f71a4f83644e246453a.png/show" width="100px"/>
+
+            <p>As the only way to change the weather is to leave the area or rest, if you want to avoid your timer resetting you can enter a wild battle and simply wait for the weather to change.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mb-3" style="display: none;">
+        <div class="card">
+          <h4 class="card-header">Debug</h4>
+          <div class="card-body">
+            <video autoplay muted playsinline></video>
+            <canvas></canvas>
+            <pre id="logs"></pre>
+          </div>
+        </div>
       </div>
     </div>
+  </main>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E=" crossorigin="anonymous"></script>
-    <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    <script src="main.js"></script>
-  </body>
+  <div class="detector-alert" style="display: none;">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <div class="blocker"></div>
+      <span>Space-time Distortion Detected!</span>
+      <a href="#" class="btn btn-primary dimiss-alert">Dismiss</a>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.6.4.js" integrity="sha256-a9jBBRygX1Bh5lt8GZjXDzyOB+bWve9EiO7tROUtj/E="
+    crossorigin="anonymous"></script>
+  <script src='https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js'></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+  <script src="main.js"></script>
+</body>
+
 </html>
