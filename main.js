@@ -72,7 +72,7 @@ function watchTick() {
     .then((imageBitmap) => {
       console.log("Grabbed frame:", imageBitmap);
       canvas.width = imageBitmap.width;
-      canvas.height = imageBitmap.height;
+      canvas.height = imageBitmap.height / 3; // /3 to make faster and only monitor top of screen.
       canvas.getContext("2d").drawImage(imageBitmap, 0, 0);
       canvas.classList.remove("hidden");
 
