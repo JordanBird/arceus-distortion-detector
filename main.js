@@ -70,9 +70,9 @@ function doTesStream() {
   }
 
   Tesseract
-    .recognize(canvas, 'eng', { logger: m => console.log(m) })
+    .recognize(canvas, 'eng', { logger: m => $('.parseProgress').html(m.progress) })
     .then(({ data: { text } }) => {
-      console.log(text);
+      $('.parsedText').html(text);
 
       if (isSpaceTime(text)) {
         onDetected();
@@ -94,9 +94,15 @@ function stopWatching() {
 }
 
 function watchTick() {
-  new ImageCapture(stream.getVideoTracks()[0]).grabFrame()
+  var tracks = stream.getVideoTracks();
+    if (tracks == null || tracks.length == 0) {
+      setTimeout(watchTick, 500);
+
+      return;
+    }
+
+    new ImageCapture(tracks[0]).grabFrame()
     .then((imageBitmap) => {
-      console.log("Grabbed frame:", imageBitmap);
       canvas.width = imageBitmap.width;
       canvas.height = imageBitmap.height / 3; // /3 to make faster and only monitor top of screen.
       canvas.getContext("2d").drawImage(imageBitmap, 0, 0);
@@ -105,7 +111,9 @@ function watchTick() {
       doTesStream();
     })
     .catch((error) => {
-      console.error("grabFrame() error: ", error);
+      console.error("watchTick() error: ", error);
+
+      setTimeout(watchTick, 500);
     });
 }
 
