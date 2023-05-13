@@ -8,6 +8,13 @@ let isWatching = false;
 let detected = false;
 let timersRunning = false;
 
+let dynamicTimerRunning = false;
+let dynamicTimerPause = false;
+
+let defaultScreenRatio = 3;
+let dynamicTimerScreenRatio = 1;
+
+
 function initEvents() {
   $('.detect-toggle').on('click', async function (e) {
     e.preventDefault();
@@ -62,26 +69,57 @@ function initEvents() {
 
     initTimers();
   });
+
+  $('#dynamicswitch').on('change', function (e) {
+    e.preventDefault();
+
+    dynamicTimerRunning = $(this).is(":checked");
+  });
 }
 
-function doTesStream() {
+function startTesseract() {
   if (!isWatching) {
     return;
   }
 
-  Tesseract
-    .recognize(canvas, 'eng', { logger: m => $('.parseProgress').html(m.progress) })
-    .then(({ data: { text } }) => {
-      $('.parsedText').html(text);
+  Tesseract.recognize(canvas, 'eng', { logger: m => $('.parseProgress').html(m.progress) }).then(processParsedText);
+}
 
-      if (isSpaceTime(text)) {
-        onDetected();
-      }
+function processParsedText(match) {
+  $('.parsedText').html(match.data.text);
 
-      if (isWatching) {
-        watchTick();
-      }
-  })
+  if (dynamicTimerRunning && isBattle(match.data.text)) {
+    $('.tracker-card').removeClass('menu-mode');
+
+    $('.tracker-card').addClass('battle-mode');
+
+    dynamicTimerPause = true;
+  }
+  else if (dynamicTimerRunning && isMenu(match.data.text)) {
+    $('.tracker-card').removeClass('battle-mode');
+
+    $('.tracker-card').addClass('menu-mode');
+
+    dynamicTimerPause = true;
+  }
+  else if (isSpaceTime(match.data.text)) {
+    $('.tracker-card').removeClass('battle-mode');
+    $('.tracker-card').removeClass('menu-mode');
+
+    dynamicTimerPause = false;
+
+    onDetected();
+  }
+  else {
+    $('.tracker-card').removeClass('battle-mode');
+    $('.tracker-card').removeClass('menu-mode');
+
+    dynamicTimerPause = false;
+  }
+
+  if (isWatching) {
+    watchTick();
+  }
 }
 
 function startWatching() {
@@ -104,11 +142,19 @@ function watchTick() {
     new ImageCapture(tracks[0]).grabFrame()
     .then((imageBitmap) => {
       canvas.width = imageBitmap.width;
-      canvas.height = imageBitmap.height / 3; // /3 to make faster and only monitor top of screen.
+
+      if (dynamicTimerRunning) {
+        canvas.height = imageBitmap.height / dynamicTimerScreenRatio; //When we're not running in dynamic mode, speed up OCR by a different ratio
+      }
+      else {
+        canvas.height = imageBitmap.height / defaultScreenRatio;
+      }
+
+      // /3 to make faster and only monitor top of screen.
       canvas.getContext("2d").drawImage(imageBitmap, 0, 0);
       canvas.classList.remove("hidden");
 
-      doTesStream();
+      startTesseract();
     })
     .catch((error) => {
       console.error("watchTick() error: ", error);
@@ -118,7 +164,88 @@ function watchTick() {
 }
 
 function isSpaceTime(match) {
-  return match.toUpperCase().indexOf("SPACE") > -1 && match.toUpperCase().indexOf("TIME") > -1;
+  var normalisedMatch = match.toUpperCase();
+
+  var lookups = getLookupResults(normalisedMatch, [
+    { lookup: "SPACE", matched: false },
+    { lookup: "TIME", matched: false },
+    { lookup: "DISTORTION", matched: false }
+  ]);
+
+  if (lookups.every(x => x.matched)) {
+    return true; //100% Confident
+  }
+
+  var excludes = getLookupResults(normalisedMatch, [
+    { lookup: "SATCHEL", matched: false }
+  ]);
+
+  if (excludes.some(x => x.matched)) {
+    return false;
+  }
+
+  if (lookups.filter(x => x.matched).length > 1) {
+    return true;
+  }
+
+  return false;
+}
+
+function isMenu(match) {
+  var normalisedMatch = match.toUpperCase();
+
+  var lookups = getLookupResults(normalisedMatch, [
+    // Stachel: 
+    { "lookup": "SATCHEL", "matched": false },
+    { "lookup": "EVERYDAY ITEMS", "matched": false },
+    { "lookup": "CHECK SUMMARY", "matched": false },
+    // Save:
+    { "lookup": "Save", "matched": false },
+    { "lookup": "PLAY TIME", "matched": false },
+    { "lookup": "CURRENT TIME", "matched": false },
+    { "lookup": "CURRENT LOCATION", "matched": false },
+    // Communications:
+    { "lookup": "COMMUNICATIONS", "matched": false },
+    { "lookup": "FOUND", "matched": false },
+    { "lookup": "MYSTERY", "matched": false },
+    // Help:
+    { "lookup": "HELP", "matched": false },
+    { "lookup": "SURVEY TIPS", "matched": false },
+    { "lookup": "GAME CONTROLS", "matched": false },
+    { "lookup": "SETTINGS", "matched": false },
+    // Map:
+    { "lookup": "MAP", "matched": false },
+    { "lookup": "CHOOSE DESTINATION", "matched": false },
+    { "lookup": "MISSIONS", "matched": false },
+    { "lookup": "GO HERE", "matched": false },
+    { "lookup": "HISUI", "matched": false },
+    // Pokedex:
+    { "lookup": "SEEN", "matched": false },
+    { "lookup": "CAUGHT", "matched": false },
+    { "lookup": "MEMBER", "matched": false }
+  ]);
+
+  return lookups.some(x => x.matched);
+}
+
+function isBattle(match) {
+  var normalisedMatch = match.toUpperCase();
+
+  var lookups = getLookupResults(normalisedMatch, [
+    // Battle:
+    { "lookup": "ACTION", "matched": false },
+    { "lookup": "ORDER", "matched": false }
+  ]);
+
+  return lookups.some(x => x.matched);
+}
+
+function getLookupResults(lookupTerm, lookups) {
+  for (var i = 0; i < lookups.length; i++) {
+    lookups[i].matched = lookupTerm.indexOf(lookups[i].lookup) > -1;
+  }
+
+  return lookups;
 }
 
 function initTimers() {
@@ -148,6 +275,14 @@ function tickTimer(element) {
   if (!timersRunning) {
     return;
   }
+  
+  if (dynamicTimerPause) {
+    setTimeout(function () {
+      tickTimer(element);
+    }, 1000);
+    
+    return;
+  }
 
   var totalTime = parseInt($(element).data('countdown'));
   var elapsedTime = parseInt($(element).data('countdown-elapsed'));
@@ -174,8 +309,7 @@ function getTimerText(totalTimeInMinutes, elapsedTimeInSeconds) {
   return (hours ? hours + ':' + twoDigits(mins) : mins) + ':' + twoDigits(time.getUTCSeconds());
 }
 
-function twoDigits(n)
-{
+function twoDigits(n) {
     return (n <= 9 ? "0" + n : n);
 }
 

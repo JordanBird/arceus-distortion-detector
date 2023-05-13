@@ -98,3 +98,16 @@ video {
 .navbar-brand {
   font-weight: bold;
 }
+
+.battle-mode {
+  background: rgb(255 0 0 / 50%);
+}
+
+.menu-mode {
+  background: rgb(0 0 255 / 50%);
+}
+
+.dynamic-header {
+  font-size: 1rem;
+  margin-top: 8px;
+}
