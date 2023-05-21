@@ -22,7 +22,7 @@ video {
 .navbar {
   --bs-navbar-color: white;
   --bs-navbar-brand-color: white;
-  --bs-dark-rgb: 35, 24, 21;
+  --bs-dark-rgb: 50, 69, 88;
 }
 
 .btn {
@@ -44,8 +44,7 @@ video {
     background-position: center bottom;
     background-size: auto 32%;
 
-    --bs-btn-bg: #283c50;
-    --bs-btn-border-color: #283c50;
+    
     --bs-btn-hover-color: #fff;
     --bs-btn-hover-bg: #34a19c;
     --bs-btn-hover-border-color: #34a19c;
@@ -53,6 +52,25 @@ video {
     --bs-btn-active-color: #fff;
     --bs-btn-active-bg: #34a19c;
     --bs-btn-active-border-color: #34a19c;
+}
+
+.btn-sm {
+  min-height: auto;
+  padding:6px;
+  font-size: 12px;
+  border-radius: 10px;
+}
+
+.btn-primary {
+  color: #e5eaee;
+  --bs-btn-bg: #283c50;
+  --bs-btn-border-color: #283c50;
+}
+
+.btn-secondary {
+  color: #283c50;
+  --bs-btn-bg: white;
+  --bs-btn-border-color: white;
 }
 
 .card {
@@ -97,4 +115,47 @@ video {
 
 .navbar-brand {
   font-weight: bold;
+}
+
+.battle-mode > * {
+  background: rgb(255 0 0 / 50%);
+  border-radius: 0;
+}
+
+.menu-mode > * {
+  background: rgb(0 0 255 / 50%);
+  border-radius: 0;
+}
+
+.overworld-mode {
+
+}
+
+.unknown-mode > * {
+  background: rgba(236, 236, 101, 0.5);
+  border-radius: 0;
+}
+
+.dynamic-header {
+  font-size: 1rem;
+  margin-top: 8px;
+}
+
+.form-check-input:checked {
+  background-color: #b43232;
+  border-color: #b43232;
+}
+
+.form-check-input:focus {
+  border-color: #b43232;
+  outline: 0;
+  box-shadow: none;
+}
+
+.form-switch .form-check-input:focus {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3e%3ccircle r='3' fill='rgba%280, 0, 0, 0.25%29'/%3e%3c/svg%3e");
+}
+
+.video-container {
+  position: relative;
 }

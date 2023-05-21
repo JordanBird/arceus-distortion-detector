@@ -34,17 +34,23 @@
 
       <div class="col-12 col-md-6 mb-3">
         <div class="card">
-          <h4 class="card-header">Detector</h4>
+          <h4 class="card-header">
+            <span>Detector</span>
+            <a class="btn btn-sm btn-secondary float-end toggle-debug-visibility" href="#">Toggle Debug</a>
+          </h4>
           <div class="card-body">
-            <p>Click below to start detecting.</p>
-            <p>You will be prompted to select a tab, window or screen to monitor. The detector will then look for the
-              words 'Space', 'Time' or 'Distortion' in the top 1/3 of your screen and flag if any are matched.</p>
-            <p class="fst-italic">This means you might have some false positives during cutscenes or menus.</p>
+            <p>Click below to start detecting. You will be prompted to select a tab, window or screen to monitor.</p>
             <div class="d-flex justify-content-center">
-              <div>
+              <div class="preview-container mb-3">
                 <span><strong>Preview</strong></span>
-                <video autoplay muted playsinline></video>
+                <div class="video-container">
+                  <video autoplay muted playsinline></video>
+                </div>
               </div>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="" id="dynamicswitch" checked>
+              <label class="form-check-label" for="dynamicswitch">Enable Dynamic Detection <span class="fst-italic">(fullscreen stream required)</span></label>
             </div>
           </div>
           <div class="card-footer">
@@ -56,7 +62,7 @@
       </div>
 
       <div class="col-12 col-md-6 mb-3">
-        <div class="card">
+        <div class="card tracker-card">
           <h4 class="card-header">Tracker</h4>
           <div class="card-body">
             <table class="table table-sm">
@@ -95,15 +101,32 @@
                 </tr>
               </tbody>
             </table>
-
-            <p class="fst-italic">The Space-time distortion timer will only run while you're roaming the overworld.</p>
-            <p class="fst-italic">If you're in a battle, conversation, cutscene or menu you should pause your timer to keep it as accurate as possible.</p>
           </div>
           <div class="card-footer">
             <div class="d-flex justify-content-around">
               <a href="#" class="btn btn-primary toggle-timer">Start Timer</a>
-              <a href="#" class="btn btn-primary stop-timer">Stop Timer</a>
+              <a href="#" class="btn btn-primary stop-timer">Reset Timer</a>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 mb-3">
+        <div class="card">
+          <h4 class="card-header">Help</h4>
+          <div class="card-body">
+            <p><strong>Detector</strong></p>
+            <p>The detector will look for a series of words that the game displays when a Space-time distortion appears in your game and alert you when it detects one. The detector can be ran in one of two modes.</p>
+
+            <p class="text-decoration-underline">Dynamic <span class="fst-italic">(default)</span></p>
+            <p>If you're able to provide a fullscreen stream of your Switch, this version will scan predetermined areas of the screen to increase performance and automatically pause the timer when you start a battle or enter a menu.</p>
+
+            <p class="text-decoration-underline">Standard</p>
+            <p>With standard mode enabled, the detector will look at the top 1/3 of your screen; but not pause the timer when you enter menus or battle.</p>
+
+            <p><strong>Tracker</strong></p>
+            <p class="fst-italic">The in-game Space-time distortion timer will only run while you're roaming the overworld.</p>
+            <p class="fst-italic">So if you're in a battle, conversation, cutscene or menu you should pause the timer above to keep timings as accurate as possible.</p>
           </div>
         </div>
       </div>
@@ -132,7 +155,7 @@
         </div>
       </div>
 
-      <div class="col-12 mb-3" style="display: none;">
+      <div class="col-12 mb-3 debug-toggle">
         <div class="card">
           <h4 class="card-header">Debug</h4>
           <div class="card-body">
@@ -148,8 +171,16 @@
   <div class="detector-alert" style="display: none;">
     <div class="d-flex flex-column justify-content-center align-items-center">
       <div class="blocker"></div>
-      <span>Space-time Distortion Detected!</span>
-      <a href="#" class="btn btn-primary dimiss-alert">Dismiss</a>
+
+      <div class="card">
+        <h4 class="card-header">Space-time Distortion Detected!</h4>
+        <div class="card-body">
+          <p>Space-time Distortion Detected!</p>
+        </div>
+        <div class="card-footer text-center">
+          <a href="#" class="btn btn-sm btn-primary dimiss-alert">Dismiss</a>
+        </div>
+      </div>
     </div>
   </div>
 
