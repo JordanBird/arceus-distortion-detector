@@ -23,7 +23,7 @@ let rectangles = [
     lookups: {
       all: [],
       any: [ "SPACE", "TIME", "DISTORTION" ],
-      none: [ "SATCHEL", "ITEM", "FADED" ]
+      none: [ "SATCHEL", "ITEM", "FADED", "ANYTIME" ]
     },
     mode: "Space Time",
     dynamic: false
